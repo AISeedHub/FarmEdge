@@ -1,0 +1,11 @@
+[Unit]
+Description=Mount Remote CIFS Share
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/mount -a
+
+[Install]
+WantedBy=multi-user.target
