@@ -1,0 +1,22 @@
+CAMERA_INDEXES:
+  - 0
+  - 4
+
+CAMERAS_NAME:
+  - "shared_folder/jukhyang_close_airpump"
+  - "shared_folder/jukhyang_close_door"
+
+CACHE_LATEST_UPDATE_PATH: "~/last_time.txt"
+
+RESOLUTION:
+  CAP_PROP_FRAME_WIDTH: 3840
+  CAP_PROP_FRAME_HEIGHT: 2160
+
+RES_DROP: # resolution to show in camera grid. Recommended: 480x360
+  WIDTH: 800
+  HEIGHT: 600
+
+INTERVAL_TIME: 5 # Minute :time to capture the image
+
+LIGHT_START_HOUR: 6
+LIGHT_END_HOUR: 20
