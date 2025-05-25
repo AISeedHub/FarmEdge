@@ -46,6 +46,36 @@ Before installing the services on the edge devices, make sure setting up the  [s
 ---
 ## Development Notes
 
+```mermaid
+flowchart TD
+    A0["Camera Recording Process
+"]
+    A1["Edge API Server
+"]
+    A2["System Service Management (Systemd)
+"]
+    A3["Camera Configuration
+"]
+    A4["Shared Image Storage
+"]
+    A5["Device/Service Status Reporting
+"]
+    A6["Video Streaming
+"]
+    A7["Edge Setup Process
+"]
+    A2 -- "Manages Service" --> A0
+    A2 -- "Manages Service" --> A1
+    A0 -- "Reads Settings From" --> A3
+    A0 -- "Saves Images To" --> A4
+    A0 -- "Updates Status Data For" --> A5
+    A1 -- "Provides Status Via API" --> A5
+    A1 -- "Provides Stream Via API" --> A6
+    A7 -- "Configures Services In" --> A2
+    A7 -- "Sets up Mount For" --> A4
+```
+
+
 ### 1. Idea
 
 #### Short Claim: The idea is to have a service that runs on each edge device that can be queried by the main server to get the status of the device (**SERVER**)
