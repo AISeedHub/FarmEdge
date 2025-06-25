@@ -46,14 +46,16 @@ echo "Reloading systemd daemon..."
 systemctl daemon-reload
 sleep 5s
 
-
-systemctl enable aiseed-mount-share.service
-echo "Mount share service enabled"
-systemctl start aiseed-mount-share.service
-echo "Mount share service started"
+# [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
+# systemctl enable aiseed-mount-share.service
+# echo "Mount share service enabled"
+# systemctl start aiseed-mount-share.service
+# echo "Mount share service started"
 
 echo "Setup completed. The CIFS share will be automatically mounted on system reboot."
 
+mount -a
+echo "Mounted the CIFS share"
 
 systemctl enable aiseed-edge-api.service
 sleep 2s
@@ -70,4 +72,7 @@ echo "Camera recording service started."
 echo "Check Status: "
 systemctl status aiseed-edge-api.service
 systemctl status aiseed-camera-recording.service
-systemctl status aiseed-mount-share.service
+
+# [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
+# systemctl status aiseed-mount-share.service
+df -h
