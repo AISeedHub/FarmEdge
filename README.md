@@ -10,7 +10,21 @@ Services run on Edge devices, to:
 To get detail check: [Development Notes](#development-notes)
 ## Installation
 Before installing the services on the edge devices, make sure setting up the  [shared folder on the host PC](#1-setting-up-the-shared-folder-on-the-host-pc) that will be mounted on the edge devices. 
-1. Automatic installation the flask service and camera service on each pi by running the `setup.sh` script as root
+1. Automatic installation the flask service and camera service on each pi by running the `setup.sh` script as root  
+     1. Open setup.sh as nano
+     ```bash
+     nano setup.sh
+     ```
+
+     2. Change ip address of host PC ans save (around line number 31)
+     ![shared_client.png](images/setup_host_ip.png)
+
+     3. run `setup.sh` as root
+     ```bash
+     sudo sh setup.sh
+     ```
+
+
 2. Setting up the services manually (we're doing this approach) :
      1. Install `cifs-utils` to mount the shared folder.
    ```bash
