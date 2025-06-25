@@ -1,12 +1,29 @@
 [Unit]
 Description=Raspberry Pi Info API
 After=multi-user.target
+# After fstab mount shared_folder, fstab automatically generate service : home-aiseed-shared_folder.mount
+After=home-aiseed-shared_folder.mount
 Conflicts=getty@tty1.service
+Requires=home-aiseed-shared_folder.mount
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 /usr/local/sbin/camera-control/recording.py
 StandardInput=tty-force
+
+# Specify the exact user and working directory
+User=aiseed
+
+# Specify workingDirectory to load config.yaml file
+WorkingDirectory=/usr/local/sbin/camera-control/
+
+# Restart the service if it fails
+Restart=always
+RestartSec=3
+
+# For test only to catch print()
+# StandardOutput=append:/home/aiseed/testlog2.txt
+
 
 [Install]
 WantedBy=multi-user.target
