@@ -14,6 +14,8 @@ fi
 
 $(which python3) -m pip install -r requirements.txt
 
+echo "--------------------------------"
+
 cp -r ./api /usr/local/sbin/
 cp -r ./camera-control /usr/local/sbin/
 echo "Copied the API and camera-control scripts to /usr/local/sbin/"
@@ -41,6 +43,8 @@ echo "Credentials file created"
 chmod 600 /etc/credentials.txt
 echo "Permissions set for the credentials file"
 
+echo "--------------------------------"
+
 # Reload systemd daemon and wait for it to complete
 echo "Reloading systemd daemon..."
 systemctl daemon-reload
@@ -53,6 +57,8 @@ sleep 5s
 # echo "Mount share service started"
 
 echo "Setup completed. The CIFS share will be automatically mounted on system reboot."
+
+echo "--------------------------------"
 
 mount -a
 echo "Mounted the CIFS share"
@@ -70,8 +76,8 @@ sleep 2s
 echo "Camera recording service started."
 
 echo "Check Status: "
-systemctl status aiseed-edge-api.service
-systemctl status aiseed-camera-recording.service
+systemctl status aiseed-edge-api.service --no-pager
+systemctl status aiseed-camera-recording.service --no-pager
 
 # [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
 # systemctl status aiseed-mount-share.service
