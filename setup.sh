@@ -52,6 +52,37 @@ echo "Reloading systemd daemon..."
 systemctl daemon-reload
 sleep 5s
 
+# set crontab to run the reboot script
+cp -r ./reboot_with_log.sh /usr/local/sbin/
+echo "Copied the reboot script to /usr/local/sbin/"
+
+touch /home/aiseed/reboot_log.txt
+chmod 777 /home/aiseed/reboot_log.txt
+# for test
+# CRON_JOB="5,10,15,20,25,30,35,40,45,50,55 * * * * /usr/local/sbin/reboot_with_log.sh"
+CRON_JOB="5 0 * * * /usr/local/sbin/reboot_with_log.sh"
+
+
+# [Note] crontab -l > /tmp/crontab.bak is used to backup the current crontab
+crontab -l > /tmp/crontab.bak
+# [Note] check if the cron job is already registered
+if ! grep -Fxq "$CRON_JOB" /tmp/crontab.bak; then
+    # [Note] if not registered, add the cron job
+    echo "$CRON_JOB" >> /tmp/crontab.bak
+    # [Note] apply the cron job
+    crontab /tmp/crontab.bak
+    echo "Cron job added to crontab"
+else
+    echo "Cron job already registered"
+fi
+
+# [Note] delete the temporary file
+rm /tmp/crontab.bak
+
+
+
+
+
 # [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
 # systemctl enable aiseed-mount-share.service
 # echo "Mount share service enabled"
@@ -84,3 +115,5 @@ systemctl status aiseed-camera-recording.service --no-pager
 # [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
 # systemctl status aiseed-mount-share.service
 df -h
+
+crontab -l

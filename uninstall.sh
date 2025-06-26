@@ -49,4 +49,10 @@ if [ -f /etc/credentials.txt ]; then
     rm -f /etc/credentials.txt
 fi
 
+# Remove the cron job
+echo "Removing the cron job..."
+crontab -l | grep -v '/usr/local/sbin/reboot_with_log.sh' | crontab -
+rm -f /usr/local/sbin/reboot_with_log.sh
+
+
 echo "Cleanup and backup completed. Backup directory: $BACKUP_DIR"
