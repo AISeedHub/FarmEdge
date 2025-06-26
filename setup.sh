@@ -5,6 +5,13 @@ then
     apt-get install python3 python3-pip
 fi
 
+if ! dpkg -s cifs-utils >/dev/null 2>&1; then # check if cifs-utils is installed
+# [Note] because the cifs-utils has no command, i use dpkg to check if it is installed
+    apt install -y cifs-utils
+else
+    echo "cifs-utils is already installed."
+fi
+
 $(which python3) -m pip install -r requirements.txt
 
 cp -r ./api /usr/local/sbin/
@@ -15,11 +22,14 @@ cp aiseed-edge-api.service /etc/systemd/system/
 echo "Copy aiseed-edge-api.service to /lib/systemd/system/"
 cp aiseed-camera-recording.service /etc/systemd/system/
 echo "Copy aiseed-camera-recording.service to /lib/systemd/system/"
-cp aiseed-mount-share.service /etc/systemd/system/
-echo "Copy aiseed-mount-share.service to /lib/systemd/system/"
+# [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
+# cp aiseed-mount-share.service /etc/systemd/system/
+# echo "Copy aiseed-mount-share.service to /lib/systemd/system/"
 
 # Update /etc/fstab with the CIFS share entry
-echo "//192.168.0.63/shared_folders  /home/aiseed/shared_folder  cifs  credentials=/etc/credentials.txt,iocharset=utf8  0  0" | sudo tee -a /etc/fstab > /dev/null
+# [Note] _netdev is used to mount when internet is connected
+# [Note] uid and gid are used to mount the CIFS share with the correct permissions
+echo "//192.168.0.63/shared_folders  /home/aiseed/shared_folder  cifs  credentials=/etc/credentials.txt,uid=aiseed,gid=aiseed,iocharset=utf8,_netdev  0  0" | sudo tee -a /etc/fstab > /dev/null
 echo "CIFS share entry added to /etc/fstab"
 
 # Create the credentials file
@@ -36,14 +46,16 @@ echo "Reloading systemd daemon..."
 systemctl daemon-reload
 sleep 5s
 
-
-systemctl enable aiseed-mount-share.service
-echo "Mount share service enabled"
-systemctl start aiseed-mount-share.service
-echo "Mount share service started"
+# [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
+# systemctl enable aiseed-mount-share.service
+# echo "Mount share service enabled"
+# systemctl start aiseed-mount-share.service
+# echo "Mount share service started"
 
 echo "Setup completed. The CIFS share will be automatically mounted on system reboot."
 
+mount -a
+echo "Mounted the CIFS share"
 
 systemctl enable aiseed-edge-api.service
 sleep 2s
@@ -60,4 +72,7 @@ echo "Camera recording service started."
 echo "Check Status: "
 systemctl status aiseed-edge-api.service
 systemctl status aiseed-camera-recording.service
-systemctl status aiseed-mount-share.service
+
+# [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
+# systemctl status aiseed-mount-share.service
+df -h
