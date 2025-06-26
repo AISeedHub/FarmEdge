@@ -253,6 +253,9 @@ def close_cameras(list_cap):
 
 
 while True:
+    # Measure the time of the main loop to sleep for the remaining time
+    mainLoopStartTime = time.time()
+
     # Schedule the camera to work only in the day time
     now = datetime.datetime.now(TIMEZONE)
     # if now is not in between target hours then sleep for 1 hour
@@ -298,8 +301,13 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+    # Measure the time of the main loop to sleep for the remaining time
+    mainLoopEndTime = time.time()
+    consumptionTime = mainLoopEndTime - mainLoopStartTime
+    sleepTime = interval_time - consumptionTime
+    
     # (For saving power consumption) Sleep for interval_time seconds
-    print(f"Sleeping for {interval_time} seconds")
-    time.sleep(interval_time)
+    print(f"Sleeping for {sleepTime} seconds")
+    time.sleep(sleepTime)
 
 cv2.destroyAllWindows()
