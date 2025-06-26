@@ -12,6 +12,7 @@ else
     echo "cifs-utils is already installed."
 fi
 
+# [Warning] By PEP 668, pip install for python3 is not allowed. In the future, we should use venv to manage the dependencies.
 $(which python3) -m pip install -r requirements.txt
 
 echo "--------------------------------"
