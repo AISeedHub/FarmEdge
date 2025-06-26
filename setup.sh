@@ -18,6 +18,7 @@ echo "--------------------------------"
 
 cp -r ./api /usr/local/sbin/
 cp -r ./camera-control /usr/local/sbin/
+chmod 777 /usr/local/sbin/camera-control/config.yaml
 echo "Copied the API and camera-control scripts to /usr/local/sbin/"
 
 cp aiseed-edge-api.service /etc/systemd/system/
