@@ -16,7 +16,8 @@ Before installing the services on the edge devices, make sure setting up the  [s
         nano setup.sh
         ```
 
-     2. Change ip address of host PC ans save (around line number 31)
+     2. Change smb/cifs information of host PC and save (around line number 31)
+        * username = aiseed or linux
         ![shared_client.png](images/setup_host_ip.png)
 
      3. Open and Change `FarmEdge/camera-control/config.yaml` as nano
