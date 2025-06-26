@@ -28,8 +28,23 @@ Before installing the services on the edge devices, make sure setting up the  [s
 
      4. run `FarmEdge/setup.sh` as root
         ```bash
-        sudo sh setup.sh
+        sudo chmod +x setup.sh
+        sudo ./setup.sh
         ```
+     5. (To check running)
+        ```bash
+        ./status.sh
+        ```
+        ![setup_status.png](images/setup_status.png)
+
+     5. (Uninstallation or Update)
+        To update, uninstall first and run setup.sh again.
+        ```bash
+        sudo ./uninstall.sh
+        ```
+        After uninstall, the backup of configuration is saved to home folder
+        ![setup_backup.png](images/setup_backup.png)
+        
 
 
 2. Setting up the services manually (we're doing this approach) :
