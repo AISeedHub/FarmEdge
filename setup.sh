@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if the script is running as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Permission denied. Please run as root."
+    exit 1
+fi
+
 if ! command -v python3 &> /dev/null
 then
     apt-get install python3 python3-pip

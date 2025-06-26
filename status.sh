@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if the script is running as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Permission denied. Please run as root."
+    exit 1
+fi
+
 # Echo the recording.py process
 ps -ef|grep -v grep|grep recording.py
 # result: aiseed      2803       1  1 14:06 tty1     00:00:03 /usr/bin/python3 /usr/local/sbin/camera-control/recording.py

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if the script is running as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Permission denied. Please run as root."
+    exit 1
+fi
+
 # Create backup directory with today's date and time
 BACKUP_DIR="/home/aiseed/backup_FarmEdge_$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$BACKUP_DIR"
