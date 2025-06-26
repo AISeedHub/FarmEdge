@@ -34,7 +34,6 @@ echo "Removing installed scripts and configs..."
 rm -rf /usr/local/sbin/api
 if [ -f /usr/local/sbin/camera-control/config.yaml ]; then
     cp -r /usr/local/sbin/camera-control/config.yaml "$BACKUP_DIR/"
-    chmod 777 "$BACKUP_DIR/config.yaml"
     rm -rf /usr/local/sbin/camera-control
 fi
 
@@ -51,7 +50,6 @@ fi
 # Backup and remove the credentials.txt file
 if [ -f /etc/credentials.txt ]; then
     cp /etc/credentials.txt "$BACKUP_DIR/"
-    chmod 777 "$BACKUP_DIR/credentials.txt"
     rm -f /etc/credentials.txt
 fi
 
@@ -60,5 +58,7 @@ echo "Removing the cron job..."
 crontab -l | grep -v '/usr/local/sbin/reboot_with_log.sh' | crontab -
 rm -f /usr/local/sbin/reboot_with_log.sh
 
+chmod -R 755 "$BACKUP_DIR"
+chown -R aiseed:aiseed "$BACKUP_DIR"
 
 echo "Cleanup and backup completed. Backup directory: $BACKUP_DIR"
