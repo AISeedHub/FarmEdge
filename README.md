@@ -28,12 +28,11 @@ Before installing the services on the edge devices, make sure setting up the  [s
 
      4. run `FarmEdge/setup.sh` as root
         ```bash
-        sudo chmod +x setup.sh
         sudo ./setup.sh
         ```
      5. (To check running)
         ```bash
-        ./status.sh
+        sudo ./status.sh
         ```
         ![setup_status.png](images/setup_status.png)
 
