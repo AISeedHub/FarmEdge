@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if the script is running as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Permission denied. Please run as root."
+    exit 1
+fi
+
 if ! command -v python3 &> /dev/null
 then
     apt-get install python3 python3-pip
@@ -12,10 +18,14 @@ else
     echo "cifs-utils is already installed."
 fi
 
+# [Warning] By PEP 668, pip install for python3 is not allowed. In the future, we should use venv to manage the dependencies.
 $(which python3) -m pip install -r requirements.txt
+
+echo "--------------------------------"
 
 cp -r ./api /usr/local/sbin/
 cp -r ./camera-control /usr/local/sbin/
+chmod 777 /usr/local/sbin/camera-control/config.yaml
 echo "Copied the API and camera-control scripts to /usr/local/sbin/"
 
 cp aiseed-edge-api.service /etc/systemd/system/
@@ -41,10 +51,43 @@ echo "Credentials file created"
 chmod 600 /etc/credentials.txt
 echo "Permissions set for the credentials file"
 
+echo "--------------------------------"
+
 # Reload systemd daemon and wait for it to complete
 echo "Reloading systemd daemon..."
 systemctl daemon-reload
 sleep 5s
+
+# set crontab to run the reboot script
+cp -r ./reboot_with_log.sh /usr/local/sbin/
+echo "Copied the reboot script to /usr/local/sbin/"
+
+touch /home/aiseed/reboot_log.txt
+chmod 777 /home/aiseed/reboot_log.txt
+# for test
+# CRON_JOB="5,10,15,20,25,30,35,40,45,50,55 * * * * /usr/local/sbin/reboot_with_log.sh"
+CRON_JOB="5 0 * * * /usr/local/sbin/reboot_with_log.sh"
+
+
+# [Note] crontab -l > /tmp/crontab.bak is used to backup the current crontab
+crontab -l > /tmp/crontab.bak
+# [Note] check if the cron job is already registered
+if ! grep -Fxq "$CRON_JOB" /tmp/crontab.bak; then
+    # [Note] if not registered, add the cron job
+    echo "$CRON_JOB" >> /tmp/crontab.bak
+    # [Note] apply the cron job
+    crontab /tmp/crontab.bak
+    echo "Cron job added to crontab"
+else
+    echo "Cron job already registered"
+fi
+
+# [Note] delete the temporary file
+rm /tmp/crontab.bak
+
+
+
+
 
 # [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
 # systemctl enable aiseed-mount-share.service
@@ -53,6 +96,8 @@ sleep 5s
 # echo "Mount share service started"
 
 echo "Setup completed. The CIFS share will be automatically mounted on system reboot."
+
+echo "--------------------------------"
 
 mount -a
 echo "Mounted the CIFS share"
@@ -70,9 +115,11 @@ sleep 2s
 echo "Camera recording service started."
 
 echo "Check Status: "
-systemctl status aiseed-edge-api.service
-systemctl status aiseed-camera-recording.service
+systemctl status aiseed-edge-api.service --no-pager
+systemctl status aiseed-camera-recording.service --no-pager
 
 # [Deprecated] "/etc/fstab" will automatically mount the CIFS share on system reboot
 # systemctl status aiseed-mount-share.service
 df -h
+
+crontab -l

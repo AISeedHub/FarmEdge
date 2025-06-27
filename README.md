@@ -16,7 +16,8 @@ Before installing the services on the edge devices, make sure setting up the  [s
         nano setup.sh
         ```
 
-     2. Change ip address of host PC ans save (around line number 31)
+     2. Change smb/cifs information of host PC and save (around line number 31)
+        * username = aiseed or linux
         ![shared_client.png](images/setup_host_ip.png)
 
      3. Open and Change `FarmEdge/camera-control/config.yaml` as nano
@@ -27,8 +28,22 @@ Before installing the services on the edge devices, make sure setting up the  [s
 
      4. run `FarmEdge/setup.sh` as root
         ```bash
-        sudo sh setup.sh
+        sudo ./setup.sh
         ```
+     5. (To check running)
+        ```bash
+        sudo ./status.sh
+        ```
+        ![setup_status.png](images/setup_status.png)
+
+     5. (Uninstallation or Update)
+        To update, uninstall first and run setup.sh again.
+        ```bash
+        sudo ./uninstall.sh
+        ```
+        After uninstall, the backup of configuration is saved to home folder
+        ![setup_backup.png](images/setup_backup.png)
+        
 
 
 2. Setting up the services manually (we're doing this approach) :
