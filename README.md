@@ -1,4 +1,5 @@
 # FarmEdge
+![image](https://github.com/user-attachments/assets/ae1fc5ae-d099-4ebc-b8ad-d1b427633327)
 
 Services run on Edge devices, to:
 - Capture images from the cameras by regular intervals `camera-control/recording.py`
