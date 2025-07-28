@@ -7,6 +7,7 @@ Services run on Edge devices, to:
 - Provide an API for the main server: `api/run.py`
   - To query the status of the edge devices
   - To stream the camera feed (real-time)
+<img width="1459" height="441" alt="image" src="https://github.com/user-attachments/assets/994109a4-c3c1-41ef-b8ef-21924ad6e865" />
 
 To get detail check: [Development Notes](#development-notes)
 ## Installation
